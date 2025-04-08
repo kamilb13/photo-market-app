@@ -1,4 +1,4 @@
-package pl.photomarketapp.photomarketapp.exceptions;
+package pl.photomarketapp.photomarketapp.exception;
 
 public class AddException extends RuntimeException {
     public AddException(String message) {
