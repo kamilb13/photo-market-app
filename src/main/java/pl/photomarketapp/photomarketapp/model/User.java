@@ -2,13 +2,16 @@ package pl.photomarketapp.photomarketapp.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name="clients")
-public class Client {
+@NoArgsConstructor
+@Table(name="users")
+public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name="id", nullable = false, unique = true)
@@ -28,4 +31,7 @@ public class Client {
 
     @Column(name="created_at")
     private Date createdAt;
+
+    @OneToMany(mappedBy = "user")
+    private List<Photo> photos;
 }

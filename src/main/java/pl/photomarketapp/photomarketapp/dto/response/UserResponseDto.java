@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
-public class ClientResponseDto {
+public class UserResponseDto {
     @JsonProperty("name")
     private String name;
 
