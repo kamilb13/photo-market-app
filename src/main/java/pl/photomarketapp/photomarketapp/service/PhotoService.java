@@ -5,6 +5,8 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.photomarketapp.photomarketapp.dto.request.PhotoRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.PhotoResponseDto;
 import pl.photomarketapp.photomarketapp.exception.PhotoUploadException;
+import pl.photomarketapp.photomarketapp.mapper.PhotoMapper;
+import pl.photomarketapp.photomarketapp.mapper.UserMapper;
 import pl.photomarketapp.photomarketapp.model.Photo;
 import pl.photomarketapp.photomarketapp.model.User;
 import pl.photomarketapp.photomarketapp.repository.PhotoRepository;
@@ -16,6 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PhotoService {
@@ -59,8 +63,15 @@ public class PhotoService {
                 photo.getDescription(),
                 photo.getAmount(),
                 photo.getFilePath(),
-                LocalDateTime.now(),
+                photo.getUploadDate(),
                 photo.getUser().getId()
         );
+    }
+
+    public List<PhotoResponseDto> getPhotos() {
+        List<Photo> photos = photoRepository.findAll();
+        return photos.stream()
+                .map(PhotoMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 }

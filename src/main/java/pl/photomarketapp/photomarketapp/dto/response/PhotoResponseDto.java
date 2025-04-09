@@ -7,7 +7,6 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
 public class PhotoResponseDto {
     @JsonProperty("id")
     private Long id;
@@ -30,12 +29,13 @@ public class PhotoResponseDto {
     @JsonProperty("user_id")
     private Long userId;
 
-    public PhotoResponseDto(Long id, String title, String description, Double amount, String filePath, LocalDateTime uploadDate) {
+    public PhotoResponseDto(Long id, String title, String description, Double amount, String filePath, LocalDateTime uploadDate, Long userId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.amount = amount;
         this.filePath = filePath;
         this.uploadDate = uploadDate;
+        this.userId = userId;
     }
 }

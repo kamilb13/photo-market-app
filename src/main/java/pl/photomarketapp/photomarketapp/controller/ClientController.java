@@ -6,10 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import pl.photomarketapp.photomarketapp.dto.response.UserResponseDto;
+import pl.photomarketapp.photomarketapp.mapper.UserMapper;
 import pl.photomarketapp.photomarketapp.model.User;
 import pl.photomarketapp.photomarketapp.repository.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Tag(name = "Kontroler klienta", description = "")
 @RestController
@@ -27,7 +30,10 @@ public class ClientController {
     }
 
     @GetMapping("/get-all-clients")
-    public List<User> getAllClients() {
-        return userRepository.findAll();
+    public List<UserResponseDto> getAllClients() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(UserMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 }

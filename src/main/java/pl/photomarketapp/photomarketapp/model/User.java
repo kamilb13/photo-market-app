@@ -13,14 +13,14 @@ import java.util.List;
 @Table(name="users")
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name="name", nullable = false, unique = false)
+    @Column(name="name", nullable = false)
     private String name;
 
-    @Column(name="surname", nullable = false, unique = false)
+    @Column(name="surname", nullable = false)
     private String surname;
 
     @Column(name="phone_number", nullable = false, unique = true)

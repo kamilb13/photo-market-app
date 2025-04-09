@@ -19,4 +19,12 @@ public class UserResponseDto {
 
     @JsonProperty("created_at")
     private Date createdAt;
+
+    public UserResponseDto(String name, String surname, String phoneNumber, String email, Date createdAt) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.createdAt = createdAt;
+    }
 }
