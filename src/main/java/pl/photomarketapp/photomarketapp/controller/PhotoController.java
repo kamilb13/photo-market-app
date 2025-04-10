@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-@CrossOrigin("localhost:4200")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class PhotoController {
     private final PhotoService photoService;
