@@ -1,5 +1,6 @@
 package pl.photomarketapp.photomarketapp.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,9 +18,10 @@ import java.util.List;
 
 @CrossOrigin("localhost:4200")
 @RestController
-public class PhotoController {
+public class  PhotoController {
     private final PhotoService photoService;
 
+    @Autowired
     public PhotoController(PhotoService photoService) {
         this.photoService = photoService;
     }
@@ -46,7 +48,7 @@ public class PhotoController {
         }
     }
 
-    @PostMapping("add-photo")
+    @PostMapping("/add-photo")
     public ResponseEntity<?> addPhoto(@ModelAttribute PhotoRequestDto photoRequestDto) {
         try {
             PhotoResponseDto photoResponseDto = photoService.addPhoto(photoRequestDto);
@@ -56,7 +58,7 @@ public class PhotoController {
         }
     }
 
-    @GetMapping("get-photos")
+    @GetMapping("/get-photos")
     public ResponseEntity<?> getPhotos() {
         try {
             List<PhotoResponseDto> photos = photoService.getPhotos();

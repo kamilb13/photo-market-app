@@ -14,23 +14,23 @@ import pl.photomarketapp.photomarketapp.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Tag(name = "Kontroler klienta", description = "")
+@Tag(name = "Kontroler usera", description = "")
 @RestController
-public class ClientController {
+public class UserController {
     private final UserRepository userRepository;
 
     @Autowired
-    public ClientController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    @PostMapping("/add-client")
-    public User addClient(@RequestBody User client) {
-        return userRepository.save(client);
+    @PostMapping("/add-user")
+    public User addUser(@RequestBody User user) {
+        return userRepository.save(user);
     }
 
-    @GetMapping("/get-all-clients")
-    public List<UserResponseDto> getAllClients() {
+    @GetMapping("/get-all-users")
+    public List<UserResponseDto> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .map(UserMapper::mapToDto)

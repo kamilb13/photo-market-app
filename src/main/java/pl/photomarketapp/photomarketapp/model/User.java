@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,8 +31,16 @@ public class User {
     private String email;
 
     @Column(name="created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "user")
     private List<Photo> photos;
+
+    public User(String name, String surname, String phoneNumber, String email) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.createdAt = LocalDateTime.now();
+    }
 }
