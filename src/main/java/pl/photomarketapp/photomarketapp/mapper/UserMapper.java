@@ -6,6 +6,7 @@ import pl.photomarketapp.photomarketapp.model.User;
 public class UserMapper {
     public static UserResponseDto mapToDto(User user) {
         return new UserResponseDto(
+                user.getId(),
                 user.getName(),
                 user.getSurname(),
                 user.getPhoneNumber(),

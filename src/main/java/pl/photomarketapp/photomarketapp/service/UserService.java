@@ -26,9 +26,7 @@ public class UserService {
                 userRequestDto.getPhoneNumber(),
                 userRequestDto.getEmail()
         );
-
         userRepository.save(user);
-
         return new UserResponseDto(
                 user.getId(),
                 user.getName(),

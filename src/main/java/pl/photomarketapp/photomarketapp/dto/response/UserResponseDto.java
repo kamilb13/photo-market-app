@@ -46,4 +46,22 @@ public class UserResponseDto {
         this.email = email;
         this.createdAt = createdAt;
     }
+
+    public UserResponseDto(String name, String surname, String phoneNumber, String email, LocalDateTime createdAt, List<Photo> photos) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.createdAt = createdAt;
+        this.photos = photos;
+    }
+
+    public UserResponseDto(Long id, String name, String surname, String phoneNumber, String email, LocalDateTime createdAt) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.createdAt = createdAt;
+    }
 }
