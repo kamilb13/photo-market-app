@@ -11,21 +11,60 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import pl.photomarketapp.photomarketapp.dto.request.LoginRequest;
+import pl.photomarketapp.photomarketapp.dto.request.RegistrationRequest;
 import pl.photomarketapp.photomarketapp.dto.request.UserRequestDto;
+import pl.photomarketapp.photomarketapp.model.User;
+import pl.photomarketapp.photomarketapp.service.JwtService;
 import pl.photomarketapp.photomarketapp.service.UserService;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
+    private final JwtService jwtService;
     private final String clientId;
 
     @Autowired
-    public AuthController(@Value("${spring.security.oauth2.client.registration.google.client-id}") String clientId, UserService userService) {
+    public AuthController(
+            @Value("${spring.security.oauth2.client.registration.google.client-id}") String clientId,
+            UserService userService, JwtService jwtService) {
         this.clientId = clientId;
         this.userService = userService;
+        this.jwtService = jwtService;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            User user = userService.authenticateUser(loginRequest.getEmail(), loginRequest.getPassword());
+            String jwtToken = jwtService.generateToken(user);
+            String refreshToken = jwtService.generateRefreshToken(user);
+            Map<String, String> response = new HashMap<>();
+            response.put("jwtToken", jwtToken);
+            response.put("refreshToken", refreshToken);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "Wystąpił błąd podczas logowania: " + e.getMessage()));
+        }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegistrationRequest registrationRequest) {
+        try {
+            userService.registerUser(registrationRequest);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Rejestracja przebiegła pomyślnie.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("error", "Wystąpił błąd podczas rejestracji: " + e.getMessage()));
+        }
     }
 
     @PostMapping("/google")
