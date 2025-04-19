@@ -24,7 +24,7 @@ public class User {
     @Column(name="surname", nullable = false)
     private String surname;
 
-    @Column(name="phone_number", nullable = false, unique = true)
+    @Column(name="phone_number")
     private String phoneNumber;
 
     @Column(name="email", nullable = false, unique = true)
@@ -40,6 +40,13 @@ public class User {
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public User(String name, String surname, String email) {
+        this.name = name;
+        this.surname = surname;
         this.email = email;
         this.createdAt = LocalDateTime.now();
     }
