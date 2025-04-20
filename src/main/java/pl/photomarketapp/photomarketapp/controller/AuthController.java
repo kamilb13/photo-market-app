@@ -8,6 +8,7 @@ import pl.photomarketapp.photomarketapp.dto.request.GoogleAuthRequest;
 import pl.photomarketapp.photomarketapp.dto.request.LoginRequest;
 import pl.photomarketapp.photomarketapp.dto.request.RegistrationRequest;
 import pl.photomarketapp.photomarketapp.service.AuthService;
+import pl.photomarketapp.photomarketapp.service.JwtService;
 
 import java.security.GeneralSecurityException;
 import java.util.Collections;
@@ -17,17 +18,18 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
+    private final JwtService jwtService;
 
     @Autowired
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, JwtService jwtService) {
         this.authService = authService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            Map<String, String> response = authService.loginUser(loginRequest);
-            return ResponseEntity.ok(response);
+            return authService.loginUser(loginRequest);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Collections.singletonMap("error", "An error occurred while logging in: " + e.getMessage()));

@@ -6,6 +6,8 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import pl.photomarketapp.photomarketapp.dto.request.GoogleAuthRequest;
 import pl.photomarketapp.photomarketapp.dto.request.LoginRequest;
@@ -31,15 +33,32 @@ public class AuthService {
         this.clientId = clientId;
     }
 
-
-    public Map<String, String> loginUser(LoginRequest loginRequest) {
+    public ResponseEntity<?> loginUser(LoginRequest loginRequest) {
         User user = userService.authenticateUser(loginRequest.getEmail(), loginRequest.getPassword());
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         Map<String, String> response = new HashMap<>();
         response.put("jwtToken", jwtToken);
         response.put("refreshToken", refreshToken);
-        return response;
+        //return response;
+        ResponseCookie jwtCookie = ResponseCookie.from("jwtToken", jwtToken)
+                .httpOnly(false)
+                .secure(false)
+                .path("/")
+                .maxAge(60 * 60)
+                .sameSite("Strict")
+                .build();
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(false)
+                .secure(false)
+                .path("/")
+                .maxAge(7 * 24 * 60 * 60)
+                .sameSite("Strict")
+                .build();
+        return ResponseEntity.ok()
+                .header("Set-Cookie", jwtCookie.toString())
+                .header("Set-Cookie", refreshCookie.toString())
+                .body(response);
     }
 
     public Map<String, String> registerUser(RegistrationRequest registrationRequest) {
