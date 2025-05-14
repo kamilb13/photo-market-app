@@ -12,10 +12,13 @@ import pl.photomarketapp.photomarketapp.dto.request.UserRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.UserResponseDto;
 import pl.photomarketapp.photomarketapp.exception.AddUserException;
 import pl.photomarketapp.photomarketapp.mapper.UserMapper;
+import pl.photomarketapp.photomarketapp.model.Photo;
 import pl.photomarketapp.photomarketapp.model.User;
 import pl.photomarketapp.photomarketapp.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -96,4 +99,18 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return user.getName() + " " + user.getSurname();
     }
+
+    public List<Photo> getPurchasedPhotos() {
+        return Collections.emptyList();
+    }
+
+    public List<Photo> getUploadedPhotos() {
+        return Collections.emptyList();
+    }
+
+    public void buyPhoto(Photo photo) {
+
+    }
+
+
 }

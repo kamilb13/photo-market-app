@@ -61,7 +61,17 @@ public class  PhotoController {
     public ResponseEntity<?> getPhotos() {
         try {
             List<PhotoResponseDto> photos = photoService.getPhotos();
-            return  ResponseEntity.status(HttpStatus.OK).body(photos);
+            return ResponseEntity.status(HttpStatus.OK).body(photos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/get-user-photos/{id}")
+    public ResponseEntity<?> getUserPhotos(@PathVariable Long id) {
+        try {
+            List<PhotoResponseDto> photos = photoService.getUserPhotos(id);
+            return ResponseEntity.status(HttpStatus.OK).body(photos);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

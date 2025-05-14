@@ -18,7 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,6 +70,13 @@ public class PhotoService {
 
     public List<PhotoResponseDto> getPhotos() {
         List<Photo> photos = photoRepository.findAll();
+        return photos.stream()
+                .map(PhotoMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<PhotoResponseDto> getUserPhotos(Long id) {
+        List<Photo> photos = photoRepository.findByUserId(id);
         return photos.stream()
                 .map(PhotoMapper::mapToDto)
                 .collect(Collectors.toList());
