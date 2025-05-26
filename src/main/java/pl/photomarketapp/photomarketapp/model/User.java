@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -39,8 +38,11 @@ public class User implements UserDetails {
     @Column(name="created_at")
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "user")
-    private List<Photo> photos;
+    @OneToMany(mappedBy = "owner")
+    private List<Photo> uploadedPhotos;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Photo> purchasedPhotos;
 
     public User(String name, String surname, String phoneNumber, String email) {
         this.name = name;

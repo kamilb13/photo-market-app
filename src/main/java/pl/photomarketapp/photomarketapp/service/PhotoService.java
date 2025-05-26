@@ -1,12 +1,12 @@
 package pl.photomarketapp.photomarketapp.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.photomarketapp.photomarketapp.dto.request.PhotoRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.PhotoResponseDto;
 import pl.photomarketapp.photomarketapp.exception.PhotoUploadException;
 import pl.photomarketapp.photomarketapp.mapper.PhotoMapper;
-import pl.photomarketapp.photomarketapp.mapper.UserMapper;
 import pl.photomarketapp.photomarketapp.model.Photo;
 import pl.photomarketapp.photomarketapp.model.User;
 import pl.photomarketapp.photomarketapp.repository.PhotoRepository;
@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -64,7 +63,7 @@ public class PhotoService {
                 photo.getAmount(),
                 photo.getFilePath(),
                 photo.getUploadDate(),
-                photo.getUser().getId()
+                photo.getOwner().getId()
         );
     }
 
@@ -75,10 +74,29 @@ public class PhotoService {
                 .collect(Collectors.toList());
     }
 
-    public List<PhotoResponseDto> getUserPhotos(Long id) {
-        List<Photo> photos = photoRepository.findByUserId(id);
+    public List<PhotoResponseDto> getUploadedPhotos(Long id) {
+        List<Photo> photos = photoRepository.findByOwnerId(id);
         return photos.stream()
                 .map(PhotoMapper::mapToDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<PhotoResponseDto> getPurchasedPhotos(Long userId) {
+        List<Photo> photos = photoRepository.findPhotosPurchasedByUserId(userId);
+        return photos.stream()
+                .map(PhotoMapper::mapToDto)
+                .collect(Collectors.toList());
+//        return Collections.emptyList();
+    }
+
+    @Transactional
+    public void buyPhoto(Long userId, Long photoId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Photo photo = photoRepository.findById(photoId)
+                .orElseThrow(() -> new RuntimeException("Photo not found"));
+        user.getPurchasedPhotos().add(photo);
+        photo.getBuyers().add(user);
+        userRepository.save(user);
     }
 }

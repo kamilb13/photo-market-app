@@ -12,7 +12,7 @@ public class PhotoMapper {
                 photo.getAmount(),
                 photo.getFilePath().replace("uploads\\", ""),
                 photo.getUploadDate(),
-                photo.getUser().getId()
+                photo.getOwner().getId()
         );
     }
 }

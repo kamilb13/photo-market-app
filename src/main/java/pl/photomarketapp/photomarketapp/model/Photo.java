@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -34,7 +35,10 @@ public class Photo {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User owner;
+
+    @ManyToMany(mappedBy = "purchasedPhotos")
+    private List<User> buyers;
 
     public Photo(String title, String description, Double amount, String filePath, User user) {
         this.title = title;
@@ -42,6 +46,6 @@ public class Photo {
         this.amount = amount;
         this.filePath = filePath;
         this.uploadDate = LocalDateTime.now();
-        this.user = user;
+        this.owner = user;
     }
 }

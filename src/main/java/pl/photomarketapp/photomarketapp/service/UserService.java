@@ -17,7 +17,6 @@ import pl.photomarketapp.photomarketapp.model.User;
 import pl.photomarketapp.photomarketapp.repository.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +47,7 @@ public class UserService implements UserDetailsService {
                 user.getPhoneNumber(),
                 user.getEmail(),
                 user.getCreatedAt(),
-                user.getPhotos()
+                user.getUploadedPhotos()
         );
     }
 

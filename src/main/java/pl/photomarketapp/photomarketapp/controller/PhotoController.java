@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.photomarketapp.photomarketapp.dto.request.BuyPhotoRequestDto;
 import pl.photomarketapp.photomarketapp.dto.request.PhotoRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.PhotoResponseDto;
 import pl.photomarketapp.photomarketapp.service.PhotoService;
@@ -14,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -32,7 +34,6 @@ public class  PhotoController {
         try {
             Path filePath = photosDir.resolve(filename);
             UrlResource resource = new UrlResource(filePath.toUri());
-
             if (resource.exists() || resource.isReadable()) {
                 return ResponseEntity.ok()
                         .contentType(MediaType.IMAGE_JPEG)
@@ -70,10 +71,33 @@ public class  PhotoController {
     @GetMapping("/get-user-photos/{id}")
     public ResponseEntity<?> getUserPhotos(@PathVariable Long id) {
         try {
-            List<PhotoResponseDto> photos = photoService.getUserPhotos(id);
+            List<PhotoResponseDto> photos = photoService.getUploadedPhotos(id);
             return ResponseEntity.status(HttpStatus.OK).body(photos);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @GetMapping("/get-purchased-photos/{id}")
+    public ResponseEntity<?> getPurchasedPhotos(@PathVariable Long id) {
+        try {
+            List<PhotoResponseDto> photos = photoService.getPurchasedPhotos(id);
+            return ResponseEntity.status(HttpStatus.OK).body(photos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/buy-photo")
+    public ResponseEntity<?> buyPhoto(@RequestBody BuyPhotoRequestDto buyPhotoRequestDto) {
+        try {
+            photoService.buyPhoto(buyPhotoRequestDto.getUserId(), buyPhotoRequestDto.getPhotoId());
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(Collections.singletonMap("status", "Photo purchased successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Failed to buy photo: " + e.getMessage());
+        }
+    }
+
 }
