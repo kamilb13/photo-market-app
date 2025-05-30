@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.photomarketapp.photomarketapp.dto.request.PhotoRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.PhotoResponseDto;
-import pl.photomarketapp.photomarketapp.exception.PhotoUploadException;
+//import pl.photomarketapp.photomarketapp.exception.PhotoUploadException;
 import pl.photomarketapp.photomarketapp.mapper.PhotoMapper;
 import pl.photomarketapp.photomarketapp.model.Photo;
 import pl.photomarketapp.photomarketapp.model.User;
@@ -33,7 +33,7 @@ public class PhotoService {
         this.userRepository = userRepository;
     }
 
-    public PhotoResponseDto addPhoto(PhotoRequestDto photoRequestDto) throws PhotoUploadException {
+    public PhotoResponseDto addPhoto(PhotoRequestDto photoRequestDto) { //throws PhotoUploadException
         File directory = new File(UPLOAD_DIR);
         if(!directory.exists()){
             directory.mkdir();
@@ -43,11 +43,15 @@ public class PhotoService {
         MultipartFile file = photoRequestDto.getFile();
         String fileName = System.currentTimeMillis() + "_" + user.getId() + "_" + user.getName() + "_" + user.getSurname() + PHOTO_FORMAT;
         Path path = Paths.get(UPLOAD_DIR + fileName);
+//        try {
         try {
             Files.write(path, file.getBytes());
         } catch (IOException e) {
-            throw new PhotoUploadException("Failed to save photo file", e);
+            throw new RuntimeException(e);
         }
+//        } catch (IOException e) {
+//            throw new PhotoUploadException("Failed to save photo file", e);
+//        }
         Photo photo = new Photo(
                 photoRequestDto.getTitle(),
                 photoRequestDto.getDescription(),

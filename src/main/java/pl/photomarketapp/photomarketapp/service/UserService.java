@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import pl.photomarketapp.photomarketapp.dto.request.RegistrationRequest;
 import pl.photomarketapp.photomarketapp.dto.request.UserRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.UserResponseDto;
-import pl.photomarketapp.photomarketapp.exception.AddUserException;
+//import pl.photomarketapp.photomarketapp.exception.AddUserException;
 import pl.photomarketapp.photomarketapp.mapper.UserMapper;
 import pl.photomarketapp.photomarketapp.model.Photo;
 import pl.photomarketapp.photomarketapp.model.User;
@@ -32,7 +32,7 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserResponseDto addUser(UserRequestDto userRequestDto) throws AddUserException {
+    public UserResponseDto addUser(UserRequestDto userRequestDto) { //throws AddUserException
         User user = new User(
                 userRequestDto.getName(),
                 userRequestDto.getSurname(),
