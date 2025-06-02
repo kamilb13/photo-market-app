@@ -87,6 +87,10 @@ public class UserService implements UserDetailsService {
         return null;
     }
 
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email.trim().toLowerCase()).orElse(null);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
