@@ -15,6 +15,7 @@ import pl.photomarketapp.photomarketapp.dto.request.GoogleAuthRequest;
 import pl.photomarketapp.photomarketapp.dto.request.LoginRequest;
 import pl.photomarketapp.photomarketapp.dto.request.RegistrationRequest;
 import pl.photomarketapp.photomarketapp.dto.request.UserRequestDto;
+import pl.photomarketapp.photomarketapp.dto.response.UserResponseDto;
 import pl.photomarketapp.photomarketapp.model.User;
 
 import java.io.IOException;
@@ -40,10 +41,11 @@ public class AuthService {
         User user = userService.authenticateUser(loginRequest.getEmail(), loginRequest.getPassword());
         String jwtToken = jwtService.generateToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
-        Map<String, String> response = new HashMap<>();
+        UserResponseDto userDTO = new UserResponseDto(user.getId(), user.getName(), user.getSurname(), user.getPhoneNumber(), user.getEmail());
+        Map<String, Object> response = new HashMap<>();
         response.put("jwtToken", jwtToken);
         response.put("refreshToken", refreshToken);
-        //return response;
+        response.put("user", userDTO);
         ResponseCookie jwtCookie = ResponseCookie.from("jwtToken", jwtToken)
                 .httpOnly(false)
                 .secure(false)
