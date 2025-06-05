@@ -29,7 +29,7 @@ public class  PhotoController {
 
     private final Path photosDir = Paths.get("uploads");
 
-    @GetMapping("/get-photo/uploads/{filename}")
+    @GetMapping("/get-photo/{filename}")
     public ResponseEntity<UrlResource> getPhoto(@PathVariable String filename) {
         try {
             Path filePath = photosDir.resolve(filename);
