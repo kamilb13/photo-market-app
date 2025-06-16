@@ -1,9 +1,27 @@
 services:
-  database:
+  db:
+    container_name: postgres_container
     image: postgres:latest
+    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: photo_market
+      POSTGRES_DB: photo_market_app_db
     ports:
-      - "5432:5432"
+      - "5433:5432"
+    networks:
+      - photo_market_app_network
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+    networks:
+      - photo_market_app_network
+networks:
+  photo_market_app_network:
+    driver: bridge
