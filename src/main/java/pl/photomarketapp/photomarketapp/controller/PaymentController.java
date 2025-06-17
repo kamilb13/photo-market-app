@@ -7,12 +7,20 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import org.springframework.web.bind.annotation.*;
+import pl.photomarketapp.photomarketapp.model.Order;
+import pl.photomarketapp.photomarketapp.repository.OrderRepository;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 public class PaymentController {
+    private final OrderRepository orderRepository;
+
+    public PaymentController(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
     @PostMapping("/create-checkout-session")
     public Map<String, Object> createCheckoutSession(@RequestBody ProductRequest request) throws StripeException {
         SessionCreateParams params = SessionCreateParams.builder()
@@ -38,7 +46,8 @@ public class PaymentController {
                 .build();
 
         Session session = Session.create(params);
-
+        Order order = new Order(new Date(), request.getProductId(), session.getId());
+        orderRepository.save(order);
         Map<String, Object> response = new HashMap<>();
         response.put("id", session.getId());
         return response;
