@@ -26,10 +26,13 @@ public class PhotoResponseDto {
     @JsonProperty("upload_date")
     private LocalDateTime uploadDate;
 
-    @JsonProperty("user_id")
+    @JsonProperty("owner_id")
     private Long userId;
+    
+    @JsonProperty("owner_username")
+    private String username;
 
-    public PhotoResponseDto(Long id, String title, String description, Double amount, String filePath, LocalDateTime uploadDate, Long userId) {
+    public PhotoResponseDto(Long id, String title, String description, Double amount, String filePath, LocalDateTime uploadDate, Long userId, String username) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -37,5 +40,6 @@ public class PhotoResponseDto {
         this.filePath = filePath;
         this.uploadDate = uploadDate;
         this.userId = userId;
+        this.username = username;
     }
 }

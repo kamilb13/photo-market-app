@@ -60,15 +60,17 @@ public class PhotoService {
                 user
         );
         photoRepository.save(photo);
-        return new PhotoResponseDto(
-                photo.getId(),
-                photo.getTitle(),
-                photo.getDescription(),
-                photo.getAmount(),
-                photo.getFilePath(),
-                photo.getUploadDate(),
-                photo.getOwner().getId()
-        );
+//        return new PhotoResponseDto(
+//                photo.getId(),
+//                photo.getTitle(),
+//                photo.getDescription(),
+//                photo.getAmount(),
+//                photo.getFilePath(),
+//                photo.getUploadDate(),
+//                photo.getOwner().getId()
+//        );
+        return PhotoMapper.mapToDto(photo);
+        
     }
 
     public List<PhotoResponseDto> getPhotos() {
