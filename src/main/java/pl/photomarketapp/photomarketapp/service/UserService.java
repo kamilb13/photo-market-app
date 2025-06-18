@@ -106,7 +106,11 @@ public class UserService implements UserDetailsService {
     public String getUsernameById(Long id) throws UsernameNotFoundException {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return user.getName() + " " + user.getSurname();
+        if (user.getSurname() != null) {
+            return user.getName() + " " + user.getSurname();
+        } else {
+            return user.getName();
+        }
     }
 
     public List<Photo> getPurchasedPhotos() {
@@ -116,10 +120,5 @@ public class UserService implements UserDetailsService {
     public List<Photo> getUploadedPhotos() {
         return Collections.emptyList();
     }
-
-    public void buyPhoto(Photo photo) {
-
-    }
-
-
+    
 }
