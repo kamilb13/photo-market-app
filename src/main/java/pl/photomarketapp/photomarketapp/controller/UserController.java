@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.photomarketapp.photomarketapp.dto.request.EmailRequest;
 import pl.photomarketapp.photomarketapp.dto.request.UserRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.UserResponseDto;
@@ -42,8 +39,18 @@ public class UserController {
 
     @PostMapping("/get-username")
     public ResponseEntity<?> getUsernameByEmail(@RequestBody EmailRequest emailRequest) {
-        try{
+        try {
             String username = String.valueOf(userService.getUsernameByEmail(emailRequest.getEmail()));
+            return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("username", username));
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+    
+    @PostMapping("/get-username/{id}")
+    public ResponseEntity<?> getUsernameById(@PathVariable Long id) {
+        try {
+            String username = String.valueOf(userService.getUsernameById(id));
             return ResponseEntity.status(HttpStatus.OK).body(Collections.singletonMap("username", username));
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

@@ -102,6 +102,12 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return user.getName() + " " + user.getSurname();
     }
+    
+    public String getUsernameById(Long id) throws UsernameNotFoundException {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return user.getName() + " " + user.getSurname();
+    }
 
     public List<Photo> getPurchasedPhotos() {
         return Collections.emptyList();
