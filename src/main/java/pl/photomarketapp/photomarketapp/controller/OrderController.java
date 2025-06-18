@@ -1,10 +1,8 @@
 package pl.photomarketapp.photomarketapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import pl.photomarketapp.photomarketapp.model.Order;
 import pl.photomarketapp.photomarketapp.repository.OrderRepository;
 
@@ -27,5 +25,28 @@ public class OrderController {
     @GetMapping("/get-all-orders")
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
+    }
+
+    @PutMapping("/update-order/{id}")
+    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order updatedOrder) {
+        return orderRepository.findById(id)
+                .map(order -> {
+                    order.setCreatedAt(updatedOrder.getCreatedAt());
+                    order.setProductId(updatedOrder.getProductId());
+                    order.setSessionId(updatedOrder.getSessionId());
+                    Order savedOrder = orderRepository.save(order);
+                    return ResponseEntity.ok(savedOrder);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/delete-order/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+        if (orderRepository.existsById(id)) {
+            orderRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
