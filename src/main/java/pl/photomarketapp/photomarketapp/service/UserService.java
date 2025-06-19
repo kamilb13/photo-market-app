@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserResponseDto addUser(UserRequestDto userRequestDto) { //throws AddUserException
+    public UserResponseDto addUser(UserRequestDto userRequestDto) {
         User user = new User(
                 userRequestDto.getName(),
                 userRequestDto.getSurname(),

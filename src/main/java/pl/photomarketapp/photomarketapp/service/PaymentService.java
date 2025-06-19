@@ -24,13 +24,10 @@ public class PaymentService {
     public void updatePaymentStatus(Payment payment, PaymentStatus newStatus) {
         payment.setStatus(newStatus);
         paymentRepository.save(payment);
-
         Order order = payment.getOrder();
         List<Payment> payments = order.getPayments();
-
         boolean anyPaid = payments.stream().anyMatch(p -> p.getStatus() == PaymentStatus.PAID);
         boolean anyFailed = payments.stream().anyMatch(p -> p.getStatus() == PaymentStatus.FAILED);
-
         if (anyPaid) {
             order.setPaymentStatus(PaymentStatus.PAID);
         } else if (anyFailed) {
@@ -38,7 +35,6 @@ public class PaymentService {
         } else {
             order.setPaymentStatus(PaymentStatus.PENDING);
         }
-
         orderRepository.save(order);
     }
 }

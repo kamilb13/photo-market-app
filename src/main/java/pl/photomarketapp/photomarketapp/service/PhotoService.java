@@ -33,7 +33,7 @@ public class PhotoService {
         this.userRepository = userRepository;
     }
 
-    public PhotoResponseDto addPhoto(PhotoRequestDto photoRequestDto) { //throws PhotoUploadException
+    public PhotoResponseDto addPhoto(PhotoRequestDto photoRequestDto) {
         File directory = new File(UPLOAD_DIR);
         if(!directory.exists()){
             directory.mkdir();
@@ -43,15 +43,11 @@ public class PhotoService {
         MultipartFile file = photoRequestDto.getFile();
         String fileName = System.currentTimeMillis() + "_" + user.getId() + "_" + user.getName() + "_" + user.getSurname() + PHOTO_FORMAT;
         Path path = Paths.get(UPLOAD_DIR + fileName);
-//        try {
         try {
             Files.write(path, file.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-//        } catch (IOException e) {
-//            throw new PhotoUploadException("Failed to save photo file", e);
-//        }
         Photo photo = new Photo(
                 photoRequestDto.getTitle(),
                 photoRequestDto.getDescription(),
@@ -60,17 +56,7 @@ public class PhotoService {
                 user
         );
         photoRepository.save(photo);
-//        return new PhotoResponseDto(
-//                photo.getId(),
-//                photo.getTitle(),
-//                photo.getDescription(),
-//                photo.getAmount(),
-//                photo.getFilePath(),
-//                photo.getUploadDate(),
-//                photo.getOwner().getId()
-//        );
         return PhotoMapper.mapToDto(photo);
-        
     }
 
     public List<PhotoResponseDto> getPhotos() {

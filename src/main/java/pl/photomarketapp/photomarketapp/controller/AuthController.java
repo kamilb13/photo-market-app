@@ -7,32 +7,24 @@ import org.springframework.web.bind.annotation.*;
 import pl.photomarketapp.photomarketapp.dto.request.GoogleAuthRequest;
 import pl.photomarketapp.photomarketapp.dto.request.LoginRequest;
 import pl.photomarketapp.photomarketapp.dto.request.RegistrationRequest;
-import pl.photomarketapp.photomarketapp.dto.response.UserResponseDto;
 import pl.photomarketapp.photomarketapp.mapper.UserMapper;
-import pl.photomarketapp.photomarketapp.model.User;
 import pl.photomarketapp.photomarketapp.repository.UserRepository;
 import pl.photomarketapp.photomarketapp.service.AuthService;
-import pl.photomarketapp.photomarketapp.service.JwtService;
 
 import java.security.GeneralSecurityException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
     private final AuthService authService;
     private final UserRepository userRepository;
-    private final JwtService jwtService;
 
     @Autowired
-    public AuthController(AuthService authService, UserRepository userRepository, JwtService jwtService) {
+    public AuthController(AuthService authService, UserRepository userRepository) {
         this.authService = authService;
         this.userRepository = userRepository;
-        this.jwtService = jwtService;
     }
 
     @PostMapping("/me")

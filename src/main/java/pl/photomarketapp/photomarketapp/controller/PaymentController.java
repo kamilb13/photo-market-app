@@ -80,7 +80,7 @@ public class PaymentController {
         Payment payment = paymentRepository.findById(id).orElseThrow();
         payment.setStatus(PaymentStatus.OFFLINE_APPROVED);
         paymentRepository.save(payment);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("Offline payment approve successfully for " + payment.getId());
     }
     
     @Getter

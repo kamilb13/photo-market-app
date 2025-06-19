@@ -99,5 +99,4 @@ public class  PhotoController {
                     .body("Failed to buy photo: " + e.getMessage());
         }
     }
-
 }
