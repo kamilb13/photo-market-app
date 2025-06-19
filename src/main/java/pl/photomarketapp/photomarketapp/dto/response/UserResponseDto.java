@@ -1,12 +1,14 @@
 package pl.photomarketapp.photomarketapp.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import pl.photomarketapp.photomarketapp.model.Photo;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class UserResponseDto {
     @JsonProperty("id")
     private Long id;
