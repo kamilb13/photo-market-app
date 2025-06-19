@@ -11,6 +11,7 @@ import pl.photomarketapp.photomarketapp.dto.request.RegistrationRequest;
 import pl.photomarketapp.photomarketapp.dto.request.UserRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.UserResponseDto;
 //import pl.photomarketapp.photomarketapp.exception.AddUserException;
+import pl.photomarketapp.photomarketapp.enums.Role;
 import pl.photomarketapp.photomarketapp.mapper.UserMapper;
 import pl.photomarketapp.photomarketapp.model.Photo;
 import pl.photomarketapp.photomarketapp.model.User;
@@ -58,14 +59,7 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
-//    public boolean existsByUsername(String username) {
-//        return userRepository.existsByUsername(username);
-//    }
-
     public void registerUser(RegistrationRequest registrationRequest) {
-//        if (existsByUsername(registrationRequest.getPhoneNumber())) {
-//            throw new RuntimeException("Username already exists");
-//        }
         User user = new User();
         user.setName(registrationRequest.getName());
         user.setSurname(registrationRequest.getSurname());
@@ -73,6 +67,7 @@ public class UserService implements UserDetailsService {
         user.setPhoneNumber(registrationRequest.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
         user.setCreatedAt(LocalDateTime.now());
+        user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);
     }
 
