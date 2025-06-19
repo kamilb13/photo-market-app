@@ -13,6 +13,9 @@ public class Payment {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
+    @Column(name = "session_id")
+    private String sessionId;
+
     @Column(name = "amount")
     private Double amount;
 

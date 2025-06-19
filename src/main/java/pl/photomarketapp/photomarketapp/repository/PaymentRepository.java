@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
-    List<Payment> findByOrder(Order order);
+    Optional<Payment> findBySessionId(String sessionId);
 }

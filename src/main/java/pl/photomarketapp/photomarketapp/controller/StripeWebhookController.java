@@ -18,6 +18,7 @@ import pl.photomarketapp.photomarketapp.enums.PaymentStatus;
 import pl.photomarketapp.photomarketapp.model.Order;
 import pl.photomarketapp.photomarketapp.model.Payment;
 import pl.photomarketapp.photomarketapp.repository.OrderRepository;
+import pl.photomarketapp.photomarketapp.repository.PaymentRepository;
 import pl.photomarketapp.photomarketapp.service.PaymentService;
 
 import java.util.Optional;
@@ -25,15 +26,17 @@ import java.util.Optional;
 @Slf4j
 @RestController
 public class StripeWebhookController {
+    private final PaymentRepository paymentRepository;
     @Value("${stripe.webhook.secret}")
     private String endpointSecret;
 
     private final OrderRepository orderRepository;
     private final PaymentService paymentService;
 
-    public StripeWebhookController(OrderRepository orderRepository, PaymentService paymentService) {
+    public StripeWebhookController(OrderRepository orderRepository, PaymentService paymentService, PaymentRepository paymentRepository) {
         this.orderRepository = orderRepository;
         this.paymentService = paymentService;
+        this.paymentRepository = paymentRepository;
     }
 
     @PostMapping("/stripe/webhook")
@@ -47,41 +50,25 @@ public class StripeWebhookController {
         }
 
         if ("checkout.session.completed".equals(event.getType())) {
-            Session session = (Session) event.getDataObjectDeserializer().getObject().orElse(null);
-
-            String sessionId = null;
-
-            if (session != null) {
-                sessionId = session.getId();
-            } else {
-                log.warn("Could not deserialize session. Falling back to manual payload parsing.");
-                try {
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode json = mapper.readTree(payload);
-                    sessionId = json.at("/data/object/id").asText();
-                } catch (Exception ex) {
-                    log.error("Failed to parse raw payload", ex);
-                }
-            }
-
-            if (sessionId != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode json = mapper.readTree(payload);
+                String sessionId = json.at("/data/object/id").asText();
                 log.info("Handling session: {}", sessionId);
                 Optional<Order> optionalOrder = orderRepository.findBySessionId(sessionId);
 
                 if (optionalOrder.isPresent()) {
                     Order order = optionalOrder.get();
-                    Payment payment = new Payment();
+                    Payment payment = paymentRepository.findBySessionId(sessionId).get();
                     payment.setOrder(order);
-                    payment.setAmount(Double.valueOf(session.getAmountTotal()));
                     paymentService.updatePaymentStatus(payment, PaymentStatus.PAID);
-
                 } else {
                     log.warn("Order not found for session ID: {}", sessionId);
                 }
+            } catch (Exception ex) {
+                log.error("Failed to parse raw payload", ex);
             }
         }
-
         return ResponseEntity.ok("Webhook received");
     }
-
 }

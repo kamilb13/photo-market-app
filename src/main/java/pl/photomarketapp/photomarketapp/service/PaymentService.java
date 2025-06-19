@@ -28,10 +28,10 @@ public class PaymentService {
         Order order = payment.getOrder();
         List<Payment> payments = order.getPayments();
 
-        boolean allPaid = payments.stream().allMatch(p -> p.getStatus() == PaymentStatus.PAID);
+        boolean anyPaid = payments.stream().anyMatch(p -> p.getStatus() == PaymentStatus.PAID);
         boolean anyFailed = payments.stream().anyMatch(p -> p.getStatus() == PaymentStatus.FAILED);
 
-        if (allPaid) {
+        if (anyPaid) {
             order.setPaymentStatus(PaymentStatus.PAID);
         } else if (anyFailed) {
             order.setPaymentStatus(PaymentStatus.FAILED);

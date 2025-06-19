@@ -59,13 +59,15 @@ public class PaymentController {
                 .build();
 
         Session session = Session.create(params);
-        Order order = new Order(new Date(), request.getProductId(), session.getId());
+        String sessionId = session.getId();
+        Order order = new Order(new Date(), request.getProductId(), sessionId);
         orderRepository.save(order);
         
         Payment payment = new Payment();
         payment.setOrder(order);
-        payment.setAmount(Double.valueOf(request.getProductPrice()));
+        payment.setAmount((double) (request.getProductPrice() / 100));
         payment.setStatus(PaymentStatus.PENDING);
+        payment.setSessionId(sessionId);
         paymentRepository.save(payment);
         
         Map<String, Object> response = new HashMap<>();
