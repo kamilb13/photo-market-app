@@ -17,6 +17,7 @@ import java.util.List;
 
 @Tag(name = "Kontroler usera", description = "")
 @RestController
+@RequestMapping("/users")
 public class UserController {
     private final UserRepository userRepository;
     private final UserService userService;
@@ -27,17 +28,17 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/add-user")
+    @PostMapping
     public UserResponseDto addUser(@RequestBody UserRequestDto user) {
         return userService.addUser(user);
     }
 
-    @GetMapping("/get-all-users")
+    @GetMapping
     public List<UserResponseDto> getAllUsers() {
         return userService.getUsers();
     }
 
-    @PostMapping("/get-username")
+    @PostMapping("/username")
     public ResponseEntity<?> getUsernameByEmail(@RequestBody EmailRequest emailRequest) {
         try {
             String username = String.valueOf(userService.getUsernameByEmail(emailRequest.getEmail()));
@@ -47,7 +48,7 @@ public class UserController {
         }
     }
     
-    @PostMapping("/get-username/{id}")
+    @PostMapping("/username/{id}")
     public ResponseEntity<?> getUsernameById(@PathVariable Long id) {
         try {
             String username = String.valueOf(userService.getUsernameById(id));
