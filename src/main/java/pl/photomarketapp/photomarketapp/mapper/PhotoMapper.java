@@ -23,6 +23,7 @@ public class PhotoMapper {
                 photo.getTitle(),
                 photo.getDescription(),
                 photo.getAmount(),
+                photo.getCategory(),
                 cleanedPath,
                 photo.getUploadDate(),
                 user.getId(),

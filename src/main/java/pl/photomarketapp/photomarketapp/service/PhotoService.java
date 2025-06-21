@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pl.photomarketapp.photomarketapp.dto.request.PhotoRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.PhotoResponseDto;
 //import pl.photomarketapp.photomarketapp.exception.PhotoUploadException;
+import pl.photomarketapp.photomarketapp.enums.PhotoCategories;
 import pl.photomarketapp.photomarketapp.mapper.PhotoMapper;
 import pl.photomarketapp.photomarketapp.model.Photo;
 import pl.photomarketapp.photomarketapp.model.User;
@@ -52,6 +53,7 @@ public class PhotoService {
                 photoRequestDto.getTitle(),
                 photoRequestDto.getDescription(),
                 photoRequestDto.getAmount(),
+                photoRequestDto.getCategory(),
                 path.toString(),
                 user
         );
@@ -90,5 +92,11 @@ public class PhotoService {
         user.getPurchasedPhotos().add(photo);
         photo.getBuyers().add(user);
         userRepository.save(user);
+    }
+    
+    public List<String> getCategories() {
+        return Arrays.stream(PhotoCategories.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
     }
 }

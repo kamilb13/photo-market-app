@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.photomarketapp.photomarketapp.dto.request.BuyPhotoRequestDto;
 import pl.photomarketapp.photomarketapp.dto.request.PhotoRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.PhotoResponseDto;
+import pl.photomarketapp.photomarketapp.enums.PhotoCategories;
 import pl.photomarketapp.photomarketapp.service.PhotoService;
 
 import java.io.FileNotFoundException;
@@ -97,6 +98,16 @@ public class  PhotoController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Failed to buy photo: " + e.getMessage());
+        }
+    }
+    
+    @GetMapping("/categories")
+    public ResponseEntity<?> getCategories() {
+        try {
+            List<String> categories = photoService.getCategories();
+            return ResponseEntity.status(HttpStatus.OK).body(categories);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 }
