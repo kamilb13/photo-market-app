@@ -6,6 +6,7 @@ import org.mockito.*;
 import org.springframework.mock.web.MockMultipartFile;
 import pl.photomarketapp.photomarketapp.dto.request.PhotoRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.PhotoResponseDto;
+import pl.photomarketapp.photomarketapp.enums.PhotoCategory;
 import pl.photomarketapp.photomarketapp.model.Photo;
 import pl.photomarketapp.photomarketapp.model.User;
 import pl.photomarketapp.photomarketapp.repository.PhotoRepository;
@@ -70,7 +71,7 @@ class PhotoServiceTest {
         User user = new User();
         user.setId(1L);
 
-        Photo photo = new Photo("t", "d", 9.99, "p", user);
+        Photo photo = new Photo("t", "d", 9.99, PhotoCategory.CARS, "p", user);
         photo.setId(1L);
         when(photoRepository.findAll()).thenReturn(List.of(photo));
 
@@ -85,7 +86,7 @@ class PhotoServiceTest {
         User user = new User();
         user.setId(1L);
 
-        Photo photo = new Photo("a", "b", 9.99, "path", user);
+        Photo photo = new Photo("a", "b", 9.99, PhotoCategory.CARS,"path", user);
         photo.setId(2L);
         when(photoRepository.findByOwnerId(1L)).thenReturn(List.of(photo));
 
@@ -100,7 +101,7 @@ class PhotoServiceTest {
         User user = new User();
         user.setId(3L);
 
-        Photo photo = new Photo("a", "b", 9.99, "path", user);
+        Photo photo = new Photo("a", "b", 9.99, PhotoCategory.CARS,"path", user);
         photo.setId(4L);
         when(photoRepository.findPhotosPurchasedByUserId(3L)).thenReturn(List.of(photo));
 

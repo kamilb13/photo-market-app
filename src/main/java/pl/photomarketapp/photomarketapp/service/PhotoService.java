@@ -99,4 +99,23 @@ public class PhotoService {
                 .map(Enum::name)
                 .collect(Collectors.toList());
     }
+
+    public PhotoResponseDto updatePhoto(PhotoRequestDto photoRequestDto, Long photoId) {
+        Photo photoFromDb = photoRepository.findById(photoId)
+                .orElseThrow(() -> new RuntimeException("Photo not found"));
+        if (photoRequestDto.getTitle() != null && !photoRequestDto.getTitle().isEmpty())
+            photoFromDb.setTitle(photoRequestDto.getTitle());
+        if (photoRequestDto.getDescription() != null && !photoRequestDto.getDescription().isEmpty())
+            photoFromDb.setDescription(photoRequestDto.getDescription());
+        if (photoRequestDto.getAmount() != null)
+            photoFromDb.setAmount(photoRequestDto.getAmount());
+        if (photoRequestDto.getCategory() != null)
+            photoFromDb.setCategory(photoRequestDto.getCategory());
+        photoRepository.save(photoFromDb);
+        return PhotoMapper.mapToDto(photoFromDb);
+    }
+
+    public void deletePhoto(Long id) {
+        photoRepository.deleteById(id);
+    }
 }

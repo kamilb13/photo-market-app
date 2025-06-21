@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import pl.photomarketapp.photomarketapp.controller.PhotoController;
 import pl.photomarketapp.photomarketapp.dto.request.PhotoRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.PhotoResponseDto;
+import pl.photomarketapp.photomarketapp.enums.PhotoCategory;
 import pl.photomarketapp.photomarketapp.service.PhotoService;
 
 import java.time.LocalDateTime;
@@ -32,7 +33,7 @@ class PhotoControllerTest {
         PhotoRequestDto requestDto = new PhotoRequestDto();
 
         PhotoResponseDto responseDto = new PhotoResponseDto(
-                1L, "test", "desc", 99.99, "uploads/photo.jpg", LocalDateTime.now(), 1L
+                1L, "test", "desc", 99.99, PhotoCategory.CARS,"uploads/photo.jpg", LocalDateTime.now(), 1L, "username"
         );
 
         when(photoService.addPhoto(requestDto)).thenReturn(responseDto);
@@ -47,8 +48,8 @@ class PhotoControllerTest {
     @Test
     void shouldReturnAllPhotos() {
         List<PhotoResponseDto> photos = List.of(
-                new PhotoResponseDto(1L, "1", "desc 1", 50.0, "uploads/p1.jpg", LocalDateTime.now(), 1L),
-                new PhotoResponseDto(2L, "2", "desc 2", 70.0, "uploads/p2.jpg", LocalDateTime.now(), 2L)
+                new PhotoResponseDto(1L, "1", "desc 1", 50.0, PhotoCategory.CARS,"uploads/p1.jpg", LocalDateTime.now(), 1L, "username1"),
+                new PhotoResponseDto(2L, "2", "desc 2", 70.0, PhotoCategory.CARS,"uploads/p2.jpg", LocalDateTime.now(), 2L, "username2")
         );
 
         when(photoService.getPhotos()).thenReturn(photos);
@@ -65,7 +66,7 @@ class PhotoControllerTest {
         Long userId = 1L;
 
         List<PhotoResponseDto> userPhotos = List.of(
-                new PhotoResponseDto(3L, "test", "desc", 120.0, "uploads/portret.jpg", LocalDateTime.now(), userId)
+                new PhotoResponseDto(3L, "test", "desc", 120.0, PhotoCategory.CARS,"uploads/portret.jpg", LocalDateTime.now(), userId, "username")
         );
 
         when(photoService.getUploadedPhotos(userId)).thenReturn(userPhotos);

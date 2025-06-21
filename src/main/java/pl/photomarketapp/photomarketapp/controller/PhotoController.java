@@ -109,4 +109,24 @@ public class  PhotoController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @PutMapping("/update/{id}")
+    private ResponseEntity<?> updatePhoto(@RequestBody PhotoRequestDto photoRequestDto, @PathVariable Long id) {
+        try {
+            PhotoResponseDto photoResponseDto = photoService.updatePhoto(photoRequestDto, id);
+            return ResponseEntity.status(HttpStatus.OK).body(photoResponseDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    private ResponseEntity<?> deletePhoto(@PathVariable Long id) {
+        try {
+            photoService.deletePhoto(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Delete photo");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }
