@@ -46,7 +46,7 @@ class AuthServiceTest {
 
         Map<String, String> result = authService.registerUser(request);
 
-        assertEquals("Reg git.", result.get("message"));
+        assertEquals("Rejestracja przebiegła pomyślnie.", result.get("message"));
         verify(userService, times(1)).registerUser(request);
     }
 
