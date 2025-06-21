@@ -1,5 +1,5 @@
 package pl.photomarketapp.photomarketapp.enums;
 
-public enum PhotoCategories {
+public enum PhotoCategory {
     PEOPLE, ANIMALS, CARS, LANDSCAPE, OTHER
 }

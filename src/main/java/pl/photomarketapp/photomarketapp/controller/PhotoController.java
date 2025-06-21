@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.photomarketapp.photomarketapp.dto.request.BuyPhotoRequestDto;
 import pl.photomarketapp.photomarketapp.dto.request.PhotoRequestDto;
 import pl.photomarketapp.photomarketapp.dto.response.PhotoResponseDto;
-import pl.photomarketapp.photomarketapp.enums.PhotoCategories;
 import pl.photomarketapp.photomarketapp.service.PhotoService;
 
 import java.io.FileNotFoundException;

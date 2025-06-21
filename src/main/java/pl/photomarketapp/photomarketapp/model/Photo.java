@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pl.photomarketapp.photomarketapp.enums.PhotoCategories;
+import pl.photomarketapp.photomarketapp.enums.PhotoCategory;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,7 +30,7 @@ public class Photo {
     
     @Enumerated(EnumType.STRING)
     @Column(name="category")
-    private PhotoCategories category;
+    private PhotoCategory category;
 
     @Column(name = "file_path")
     private String filePath;
@@ -45,7 +45,7 @@ public class Photo {
     @ManyToMany(mappedBy = "purchasedPhotos")
     private List<User> buyers;
 
-    public Photo(String title, String description, Double amount, PhotoCategories category, String filePath, User user) {
+    public Photo(String title, String description, Double amount, PhotoCategory category, String filePath, User user) {
         this.title = title;
         this.description = description;
         this.amount = amount;
