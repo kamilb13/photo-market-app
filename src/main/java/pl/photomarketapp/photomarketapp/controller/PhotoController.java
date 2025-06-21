@@ -110,8 +110,8 @@ public class  PhotoController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    private ResponseEntity<?> updatePhoto(@RequestBody PhotoRequestDto photoRequestDto, @PathVariable Long id) {
+    @PutMapping("/update-photo/{id}")
+    public ResponseEntity<?> updatePhoto(@RequestBody PhotoRequestDto photoRequestDto, @PathVariable Long id) {
         try {
             PhotoResponseDto photoResponseDto = photoService.updatePhoto(photoRequestDto, id);
             return ResponseEntity.status(HttpStatus.OK).body(photoResponseDto);
@@ -120,8 +120,8 @@ public class  PhotoController {
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    private ResponseEntity<?> deletePhoto(@PathVariable Long id) {
+    @DeleteMapping("/delete-photo/{id}")
+    public ResponseEntity<?> deletePhoto(@PathVariable Long id) {
         try {
             photoService.deletePhoto(id);
             return ResponseEntity.status(HttpStatus.OK).body("Delete photo");
