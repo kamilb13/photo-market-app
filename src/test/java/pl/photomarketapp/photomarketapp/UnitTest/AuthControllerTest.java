@@ -1,4 +1,4 @@
-package pl.photomarketapp.photomarketapp;
+package pl.photomarketapp.photomarketapp.UnitTest;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

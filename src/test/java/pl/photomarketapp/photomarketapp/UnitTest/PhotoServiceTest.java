@@ -1,4 +1,4 @@
-package pl.photomarketapp.photomarketapp;
+package pl.photomarketapp.photomarketapp.UnitTest;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,6 @@ import pl.photomarketapp.photomarketapp.repository.PhotoRepository;
 import pl.photomarketapp.photomarketapp.repository.UserRepository;
 import pl.photomarketapp.photomarketapp.service.PhotoService;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
